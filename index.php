@@ -1,3 +1,12 @@
+<?php  
+include "include/Connect.php";
+ $sql3="SELECT * FROM review;";
+ $result3=$Connect->query($sql3);
+ 
+ $sql4="SELECT * FROM game;";
+ $result4=$Connect->query($sql4);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 	
@@ -146,7 +155,7 @@
 													</span>
 													<div class="progress-value">
 														<div>
-															827<br>
+															<?php echo mysqli_num_rows( $result4 ); ?><br>
 															<span>Game</span>
 														</div>
 													</div>
@@ -164,7 +173,13 @@
 													</span>
 													<div class="progress-value">
 														<div>
-															983<br>
+															<?php 
+                                                                                                                        $revCount;
+                                                                                                                        while($row3 = mysqli_fetch_assoc($result3)){
+                                                                                                                          $revCount += $row3['revNum'] ; 
+                                                                                                                        }
+                                                                                                                        $userCount = 150/100*$revCount ;
+                                                                                                                        echo ceil($userCount) ?><br>
 															<span>User</span>
 														</div>
 													</div>
@@ -182,7 +197,7 @@
 													</span>
 													<div class="progress-value">
 														<div>
-															19547<br>
+															<?php echo $revCount ?><br>
 															<span>Review</span>
 														</div>
 													</div>
@@ -344,11 +359,6 @@
 																		<span><i class="fa fa-check"></i> Sign In</span>
 																		<span><i class="fa fa-check"></i> Sign Out</span> 
 																		<br>
-																		<div class="col-lg-12">
-																			<div class="border-first-button scroll-to-section" style="margin-left: 60%;">
-																				<a href="sign up.html">sign up</a>
-																			</div>
-																		</div>
 																	</div>
 																</div>
 															</div>
@@ -416,67 +426,56 @@
 					</div>
 				</div>
 			</div>
+                    
+                    
+                                                                                                              !--!top5!--!
 			<div class="container-fluid wow fadeIn" data-wow-duration="1s" data-wow-delay="0.7s">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="loop owl-carousel">
+                                                    <?php
+                                                        $sql1="SELECT * FROM review ORDER BY revNum DESC LIMIT 5;";
+                                                        $result1=$Connect->query($sql1);
+                                                        if ($result1->num_rows > 0){
+                                                            $count = 0;
+                                                          while ($row1 = mysqli_fetch_assoc($result1)){
+                                                              $sql2="SELECT Name, GameID, Picture FROM game where GameID = $row1[GameID];";
+                                                              $result2=$Connect->query($sql2);
+                                                              $row2 = mysqli_fetch_assoc($result2)
+                                                       ?>
 							<div class="item">
 								<div class="portfolio-item">
-									<div class="thumb">
-										<a href="game post.html"><img src="assets2/images/portfolio-01.jpg" alt="" onclick="gamePage(this.src , 'FIFA 2022')"></a>
+									<div class="thumb" style="height: 0; padding-bottom: 100%;">
+                                                                            <a href="game post.php<?php echo'?id='.$row2['GameID'] ?>"><img src="<?php echo $row2['Picture'] ?>" alt="" style="object-position: center;height: 100%;width: 100%;top: 0; bottom: 0; left: 0; right: 0;position: absolute;"></a>
 									</div>
 									<div class="down-content">
-										<h4>FIFA 2022</h4>
-										<span>3&rfr;&dfr;</span>
+										<h4><?php echo $row2['Name'] ?></h4>
+										<span>
+                                                                                    <?php 
+                                                                                    ++$count;
+                                                                                        if($count == 3){
+                                                                                            echo $count.'&rfr;&dfr;';
+                                                                                        }
+                                                                                        else if($count == 2){
+                                                                                            echo $count.'&nfr;&dfr;';
+                                                                                        }
+                                                                                        else if($count == 1){
+                                                                                            echo $count.'&sfr;&tfr;';
+                                                                                        }
+                                                                                        else{
+                                                                                           echo $count.'&tfr;&hfr;';  
+                                                                                        }
+                                                                                    ?>
+                                                                                </span>
+                                                                                
 									</div>
 								</div>
 							</div>
-							<div class="item">
-								<div class="portfolio-item">
-									<div class="thumb">
-										<a href="game post.html"><img src="assets2/images/portfolio-05.jpg" alt="" onclick="gamePage(this.src , 'Fall Guys')"></a>
-									</div>
-									<div class="down-content">
-										<h4>Fall Guys</h4>
-										<span>4&tfr;&hfr;</span>
-									</div>
-								</div>
-								
-							</div>
-							<div class="item">
-								
-								<div class="portfolio-item">
-									<div class="thumb">
-										<a href="game post 2.html"><img src="assets2/images/portfolio-02.jpg" alt="" onclick="gamePage(this.src , 'Crash')"></a>
-									</div>
-									<div class="down-content">
-										<h4>Crash</h4>
-										<span>5&tfr;&hfr;</span>
-									</div>
-								</div>
-							</div>
-							<div class="item">
-								<div class="portfolio-item">
-									<div class="thumb">
-										<a href="game post.html"><img src="assets2/images/portfolio-03.jpg" alt="" onclick="gamePage(this.src , 'Rocket League')"></a>
-									</div>
-									<div class="down-content">
-										<h4> Rocket League</h4>
-										<span>1&sfr;&tfr;</span>
-									</div>
-								</div>
-							</div>
-							<div class="item">
-								<div class="portfolio-item">
-									<div class="thumb">
-										<a href="game post.html"><img src="assets2/images/portfolio-04.jpg" alt="" onclick="gamePage(this.src , 'Spyro')"></a>
-									</div>
-									<div class="down-content">
-										<h4>Spyro</h4>
-										<span>2&nfr;&dfr;</span>
-									</div>
-								</div>
-							</div>
+                                                    <?php 
+                                                          }
+                                                        }
+                                                          ?>
+							
 						</div>
 					</div>
 				</div>
@@ -493,63 +492,57 @@
 							<div class="line-dec"></div>
 						</div>
 					</div>
+                                        <?php
+                                            $sql="SELECT * FROM game ORDER BY GameID DESC LIMIT 4;";
+                                            $result=$Connect->query($sql);
+                                            if ($result->num_rows > 0){
+                                                $first = true;
+                                              while ($row = mysqli_fetch_assoc($result)){
+                                                 if($first){
+                                       ?>
 					<div class="col-lg-6 show-up wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s">
 						<div class="blog-post">
 							<div class="thumb">
-								<a href="game post.html"><img src="assets2/images/blog-post-01.jpg" alt="" onclick="gamePage(this.src , 'Fortnite')"></a>
+								<a href="game post.php<?php echo'?id='.$row['GameID'] ?>"><img src="<?php echo $row['Picture'] ?>" alt="" onclick="gamePage(this.src , 'Fortnite')"></a>
 							</div>
 							<div class="down-content">
-								<span class="category">Survival</span>
-								<span class="date">03 March 2022</span>
-								<a ><h4>Fortnite</h4></a>
-								<p>Fortnite is a survival game where 100 players fight against each other in player versus player combat to be the la... <a href="game post.html" onclick="gamePage('assets2/images/blog-post-01.jpg' , 'Fortnite')">Read more</a></p>
+								<span class="category"><?php echo $row['Type'] ?></span>
+								<span class="date"><?php echo $row['AddTime'] ?></span>
+								<a ><h4><?php echo $row['Name'] ?></h4></a>
+								<p style="max-height: 120px;text-overflow: ellipsis; word-wrap: break-word; overflow: hidden;"><?php echo $row['Description']?></p>
 								<span class="author"><img src="assets2/images/author-post.jpg" alt="">By: Andrea Mentuzi</span>
-								<div class="border-first-button"><a href="game post.html" onclick="gamePage('assets2/images/blog-post-01.jpg' , 'Fortnite')">See Post</a></div>
+								<div class="border-first-button"><a href="game post.php<?php echo'?id='.$row['GameID'] ?>">See Post</a></div>
 							</div>
 						</div>
 					</div>
+                                        
 					<div class="col-lg-6 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s">
 						<div class="blog-posts">
 							<div class="row">
+                                                            <?php
+                                                                $first = false;
+                                                                 }
+                                                                 else{
+                                                              ?>
 								<div class="col-lg-12">
 									<div class="post-item">
 										<div class="thumb">
-											<a href="game post.html"><img src="assets2/images/blog-post-02.jpg" alt="" onclick="gamePage(this.src , 'PUBG')" style="height: 230px; width: 230px;" ></a>
+											<a href="game post.php<?php echo'?id='.$row['GameID']?>"><img src="<?php echo $row['Picture']?>" alt="" style="height: 230px; width: 230px;" ></a>
 										</div>
 										<div class="right-content">
-											<span class="category">Shooter</span>
-											<span class="date">24 September 2021</span>
-											<a><h4>PUBG</h4></a>
-											<p>is a player versus player shooter game in which up to one hundred players fight in a battle royale</p>
+											<span class="category"><?php echo $row['Type']?></span>
+											<span class="date"><?php echo $row['AddTime'] ?></span>
+											<a><h4><?php echo $row['Name'] ?></h4></a>
+											<p style="max-height: 60px;text-overflow: ellipsis; word-wrap: break-word; overflow: hidden;"><?php echo $row['Description']?></p>
 										</div>
 									</div>
 								</div>
-								<div class="col-lg-12">
-									<div class="post-item">
-										<div class="thumb">
-											<a href="game post.html"><img src="assets2/images/blog-post-03.jpg" alt="" onclick="gamePage(this.src , 'Call of Duty')" style="height: 230px; width: 230px;"></a>
-										</div>
-										<div class="right-content">
-											<span class="category">Shooter</span>
-											<span class="date">28 December 2021</span>
-											<a><h4>Call of Duty </h4></a>
-											<p>is a first-person shooter video game franchise published by Activision. </p>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-12">
-									<div class="post-item last-post-item">
-										<div class="thumb">
-											<a href="game post.html"><img src="assets2/images/blog-post-04.jpg" alt="" onclick="gamePage(this.src , 'Dead by Daylight')" style="height: 230px; width: 230px;"></a>
-										</div>
-										<div class="right-content">
-											<span class="category">Horror</span>
-											<span class="date">2 April 2022</span>
-											<a><h4>Dead by Daylight </h4></a>
-											<p>is a survival horror asymmetric multiplayer online game</p>
-										</div>
-									</div>
-								</div>
+                                                        <?php
+                                                                 }
+                                                              }
+                                                            }
+                                                        ?>
+								
 							</div>
 						</div>
 					</div>
