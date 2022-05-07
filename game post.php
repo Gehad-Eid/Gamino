@@ -1,3 +1,26 @@
+<?php  
+include "include/Connect.php";
+if (!isset($_GET['id'])) {
+	header('Location: index.php');
+}
+$id = $_GET['id'];
+$sql="SELECT * FROM game where GameID = $id;";
+$result=$Connect->query($sql); 
+if ($result->num_rows > 0){
+   $row=mysqli_fetch_assoc($result);
+}
+else{
+   header('Location: index.php');
+}
+
+$sql2="SELECT * FROM review where GameID = $id;";
+$result2=$Connect->query($sql2); 
+$result3=$Connect->query($sql2);
+  if ($result2->num_rows > 0){
+   $row2=mysqli_fetch_assoc($result2);
+} 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 	
@@ -25,7 +48,7 @@
 		
 	</head>
 	
-	<body onload="recivedGamePage()">
+	<body>
 		
 		<!-- ***** Preloader Start ***** -->
 		<div id="js-preloader" class="js-preloader">
@@ -48,7 +71,7 @@
 					<div class="col-12">
 						<nav class="main-nav">
 							<!-- ***** Logo Start ***** -->
-							<a href="index.html" class="logo" id="OB">
+							<a href="index.php" class="logo" id="OB">
 								<img src="assets/images/logo-v1.png" alt="">
 							</a>
 							<style>
@@ -63,10 +86,10 @@
 							
 							<!-- ***** Menu Start ***** -->
 							<ul class="nav">
-								<li class="scroll-to-section"><a href="index.html" class="active">Home</a></li>
-								<li class="scroll-to-section"><a href="index.html">About</a></li>
-								<li class="scroll-to-section"><a href="Games list.html">Games</a></li>
-								<li class="scroll-to-section"><a href="index.html">Contact</a></li> 
+								<li class="scroll-to-section"><a href="index.php" class="active">Home</a></li>
+								<li class="scroll-to-section"><a href="index.php">About</a></li>
+								<li class="scroll-to-section"><a href="Games list.php">Games</a></li>
+								<li class="scroll-to-section"><a href="index.php">Contact</a></li> 
 								<li class="scroll-to-section"><div class="border-first-button"></div></li> 
 							</ul>
 							
@@ -88,14 +111,14 @@
 					<div class="col-lg-12 show-up wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s" >
 						<div class="blog-post" >
 							<div class="thumb">
-								<a><img id="srcID" src="assets/images/blog-post-01.jpg" alt="" ></a>
+								<a><img id="srcID" src="<?php echo $row['Picture'] ?>" alt="" ></a>
 							</div>
 							<div class="down-content">
-								<span class="category">Survival</span>
-								<span class="date">03 March 2022</span>
-								<a ><h4 id="h4ID">Fortnite</h4></a>
-								<p>Fortnite is a survival game where 100 players fight against each other in player versus player combat to be the last one standing. It is a fast-paced, action-packed game, not unlike The Hunger Games, where strategic thinking is a must in order to survive. There are an estimated 125 million players on Fortnite.</p>
-								<span class="author"><img src="assets/images/author-post.jpg" alt="">By: Andrea Mentuzi</span>
+								<span class="category"><?php echo $row['Type']; ?></span>
+								<span class="date"><?php echo $row['AddTime']; ?></span>
+								<a ><h4 id="h4ID"><?php echo $row['Name']; ?></h4></a>
+								<p><?php echo $row['Description']?></p>
+								<span class="author"><img src="assets2/images/author-post.jpg" alt="">By: Andrea Mentuzi</span>
 							</div>
 						</div>
 					</div>
@@ -113,14 +136,18 @@
 								<div class="col-lg-12 wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.25s">
 									<form id="contact" action="" method="post">
 										<div class="row">
-											
-											
-											<div class="col-lg-5">
-												<div class="fill-form">
-													<div class="row" id="StoryVid">
-														<iframe width="560" height="315" src="https://www.youtube.com/embed/6M3-AwaIwzM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
-														encrypted-media; gyroscope; picture-in-picture" style="position: relative; left: 90%;" allowfullscreen></iframe> 
-													</div>
+											<div class="col-lg-12">
+												<div class="fill-form" style="height: 75vh; padding: 0px 0px 0px 0px;">
+													<div class="row" id="StoryVid" style="width: 90%;height: 90%; margin: 80px auto;">
+                                                                                                            <?php if(!$row['StoryVideo']&& !$row['VideoURL']){ ?>
+                                                                                                             <fieldset style="position: relative; text-align: center; margin: auto;"> There is no game story video for this Game! </fieldset>   
+                                                                                                            <?php
+                                                                                                            }else{
+                                                                                                            ?>
+                                                                                                            <iframe src="<?php if($row['StoryVideo']){echo $row['StoryVideo'];}else if($row['VideoURL']){echo $row['VideoURL'];} ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+														encrypted-media; gyroscope; picture-in-picture" style="position: relative; height: auto;" allowfullscreen></iframe> 
+                                                                                                            <?php } ?>
+                                                                                                        </div>
 												</div>
 											</div>
 										</div>
@@ -141,7 +168,7 @@
 								<div class="col-lg-4 offset-lg-4  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.3s">
 									<div class="section-heading">
 										<h6> </h6>
-										<h4><em>Reviews</em></h4>
+										<h4><em>Reviews</em></h4>   <!--?php echo mysqli_num_rows( $result2 ); ?-->
 										<div class="line-dec"></div>
 									</div>
 								</div> 
@@ -150,24 +177,25 @@
 										<div class="row">
 											
 											<div class="col-lg-7">
-												<div class="col-12 pb-4">
-													<!-- <h1>Comments</h1> -->
-													<div class="comment mt-4 text-justify float-left"> <img src="assets2/images/blog-post-01...jpg" alt="" class="rounded-circle" width="40" height="40" style="width: 40px;">
-														<h4>Jhon Doe</h4> <span>- 20 March 2022</span> <br>
-														<p style="text-align: left;padding-left: 30px;">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus numquam assumenda hic aliquam vero sequi velit molestias doloremque molestiae dicta?</p>
+												<div class="col-12 pb-4" style="margin-top: 75px;">
+													<!-- <h4 style="font-style: normal; color: #726ae3;margin: 30px auto;">Comments</h4> -->
+                                                                                                        <?php if($row2['revNum'] == 0){ ?>
+                                                                                                             <h4 style="padding-top: 25%;"> There is no reviews yet!</h4>  <br>
+														<p style="text-align: center;"> Be the first one and post your review.. </p>   
+                                                                                                            <?php
+                                                                                                            }else{
+                                                                                                                if ($result3->num_rows > 0){
+                                                                                                                    while ($row3=mysqli_fetch_assoc($result3)){
+                                                                                                            ?>
+													<div class="comment mt-4 text-justify float-left" style="text-align: left; padding-left: 30px;"> <img src="assets/images/author-post.jpg" alt="" class="rounded-circle" width="40" height="40" style="width: 40px; display: inline-block;">
+														<h4 style="display: inline;margin-left: 10px;"><?php echo $row3['ReviewerName'] ?></h4> <span>- <?php echo $row3['date'] ?></span> <br>
+														<p style="text-align: left;padding-left: 55px;"> <?php echo $row3['Content'] ?></p>
 													</div>
-													<div class="text-justify comment mt-4 float-right"> <img src="assets2/images/blog-post-02...jpg" alt="" class="rounded-circle" width="40" height="40" style="width: 40px;">
-														<h4>Rob Simpson</h4> <span>- 21 March 2022</span> <br>
-														<p style="text-align: left;padding-left: 30px;">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus numquam assumenda hic aliquam vero sequi velit molestias doloremque molestiae dicta?</p>
-													</div>
-													<div class="comment mt-4 text-justify"> <img src="assets2/images/blog-post-04....jpg" alt="" class="rounded-circle" width="40" height="40" style="width: 40px;">
-														<h4>Amanda Watrson</h4> <span>- 23 March 2022</span> <br>
-														<p style="text-align: left;padding-left: 30px;">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus numquam assumenda hic aliquam vero sequi velit molestias doloremque molestiae dicta?</p>
-													</div>
-													<div class="comment mt-4 text-justify"> <img src="assets2/images/blog-post-03...jpg" alt="" class="rounded-circle" width="40" height="40" style="width: 40px;">
-														<h4>Jaycop Megna</h4> <span>- 25 March 2022</span> <br>
-														<p style="text-align: left;padding-left: 30px;">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus numquam assumenda hic aliquam vero sequi velit molestias doloremque molestiae dicta?</p>
-													</div>
+                                                                                                        <?php
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }?>
+													
 												</div>
 											</div>
 											<div class="col-lg-5">
@@ -190,7 +218,7 @@
 														</div>
 														<div class="col-lg-12">
 															<fieldset>
-																<button type="submit" id="form-submit" class="main-button ">Post your review</button>
+																<button type="submit" name="submit-btn" id="form-submit" class="main-button ">Post your review</button>
 															</fieldset>
 														</div>
 													</div>
@@ -198,6 +226,24 @@
 											</div>
 										</div>
 									</form>
+                                                                    <?php 
+                                                                        if (isset($_POST["submit-btn"])) {
+                                                                            $name=$_POST["name"];
+                                                                            $email=$_POST["email"];
+                                                                            $message=$_POST["message"];
+                                                                            $revNum=mysqli_num_rows($result2);
+                                                                            $revNum++;
+                                                                            $date=date("d F Y");
+                                                                            $sqlIN = "INSERT INTO review (GameID, revNum, ReviewerName, email, date, Content) VALUES ('$id','$revNum','$name','$email','$date','$message');";
+                                                                            
+                                                                            if (mysqli_query($Connect, $sqlIN)) {
+                                                                                $sql5="UPDATE review SET revNum=$revNum WHERE GameID=$id;";
+                                                                                $result5=$Connect->query($sql5);
+                                                                                header('Location:game post.php?id='.$id);
+                                                                                exit;
+                                                                            }
+                                                                        }
+                                                                    ?>
 								</div>
 							</div>
 						</div>
@@ -219,7 +265,7 @@
 								<div class="col-lg-12" style="padding: 12px;">
 									<div class="post-item">
 										<div class="thumb">
-											<a href="game post.html"><img src="assets2/images/blog-post-02.jpg" onclick="gamePage(this.src , 'PUBG')" alt="" style="height: 230px; width: 230px;"></a>
+											<a href="game post.php"><img src="assets2/images/blog-post-02.jpg" onclick="gamePage(this.src , 'PUBG')" alt="" style="height: 230px; width: 230px;"></a>
 										</div>
 										<div class="right-content">
 											<span class="category">Shooter</span>
@@ -232,7 +278,7 @@
 								<div class="col-lg-12" style="padding: 12px;">
 									<div class="post-item">
 										<div class="thumb">
-											<a href="game post.html"><img src="assets2/images/blog-post-03.jpg" onclick="gamePage(this.src , 'Call of Duty')" alt="" style="height: 230px; width: 230px;"></a>
+											<a href="game post.php"><img src="assets2/images/blog-post-03.jpg" onclick="gamePage(this.src , 'Call of Duty')" alt="" style="height: 230px; width: 230px;"></a>
 										</div>
 										<div class="right-content">
 											<span class="category">Shooter</span>
@@ -245,7 +291,7 @@
 								<div class="col-lg-12" style="padding: 12px;">
 									<div class="post-item last-post-item">
 										<div class="thumb">
-											<a href="game post.html"><img src="assets2/images/blog-post-04.jpg" onclick="gamePage(this.src , 'Dead by Daylight')" alt="" style="height: 230px; width: 230px;"></a>
+											<a href="game post.php"><img src="assets2/images/blog-post-04.jpg" onclick="gamePage(this.src , 'Dead by Daylight')" alt="" style="height: 230px; width: 230px;"></a>
 										</div>
 										<div class="right-content">
 											<span class="category">Horror</span>
@@ -280,12 +326,6 @@
 			<script src="assets/js/animation.js"></script>
 			<script src="assets/js/imagesloaded.js"></script>
 			<script src="assets/js/custom.js"></script>
-			<script>
-				function recivedGamePage(){
-					document.getElementById("srcID").src = localStorage.getItem("src");
-					document.getElementById("h4ID").innerHTML = localStorage.getItem("h4");
-				}
-			</script>
 			
-		</body>
-	</html>																						
+        </body>
+</html>																						

@@ -58,7 +58,7 @@ include "include/Connect.php";
 					<div class="col-12">
 						<nav class="main-nav">
 							<!-- ***** Logo Start ***** -->
-							<a href="index.html" class="logo" id="OB">
+							<a href="index.php" class="logo" id="OB">
 								<img src="assets/images/logo-v1.png" alt="">
 							</a>
 							<style>
@@ -77,9 +77,9 @@ include "include/Connect.php";
 								<li class="scroll-to-section"><a href="#about">About</a></li>
 								<li class="scroll-to-section"><a href="#services">Services</a></li>
 								<li class="scroll-to-section"><a href="#blog">Recent Games</a></li>
-								<li class="scroll-to-section"><a href="Games list.html">Games</a></li>
+								<li class="scroll-to-section"><a href="Games list.php">Games</a></li>
 								<li class="scroll-to-section"><a href="#contact">Contact</a></li> 
-								<li class="scroll-to-section"><div class="border-first-button"><a href="log in.html">log in</a></div></li> 
+								<li class="scroll-to-section"><div class="border-first-button"><a href="log in.php">log in</a></div></li> 
 							</ul>
 							
 							<a class='menu-trigger'>
@@ -108,7 +108,7 @@ include "include/Connect.php";
 										</div>
 										<!-- <div class="col-lg-12">
 											<div class="border-first-button scroll-to-section">
-												<a href="sign up.html">sign up</a>
+												<a href="sign up.php">sign up</a>
 											</div>
 										</div> -->
 									</div>
@@ -175,8 +175,10 @@ include "include/Connect.php";
 														<div>
 															<?php 
                                                                                                                         $revCount;
-                                                                                                                        while($row3 = mysqli_fetch_assoc($result3)){
-                                                                                                                          $revCount += $row3['revNum'] ; 
+                                                                                                                        $sqlconut="SELECT DISTINCT GameID, revNum from review ;";
+                                                                                                                        $resultcount=$Connect->query($sqlconut);
+                                                                                                                        while($rowCount = mysqli_fetch_assoc($resultcount)){
+                                                                                                                          $revCount += $rowCount['revNum'] ; 
                                                                                                                         }
                                                                                                                         $userCount = 150/100*$revCount ;
                                                                                                                         echo ceil($userCount) ?><br>
@@ -323,7 +325,7 @@ include "include/Connect.php";
 															<div class="col-lg-6 align-self-center">
 																<div class="left-text">
 																	<h4>Game Stories</h4>
-																	<p>With each game there will ba a game story to help you understand the game and decide whethers you gonna play it or not.</p>
+																	<p>With each game there will be a game story to help you understand the game and decide whether you gonna play it or not.</p>
 																	
 																	<div class="ticks-list">
 																		<h6 style="color: #91b6fc; font-weight: 700; line-height: 35px; margin-bottom: 10px; margin-top: 10px;">For Our Users:</h6>
@@ -434,7 +436,7 @@ include "include/Connect.php";
 					<div class="col-lg-12">
 						<div class="loop owl-carousel">
                                                     <?php
-                                                        $sql1="SELECT * FROM review ORDER BY revNum DESC LIMIT 5;";
+                                                        $sql1="SELECT DISTINCT GameID , revNum FROM review ORDER BY revNum DESC LIMIT 5;";
                                                         $result1=$Connect->query($sql1);
                                                         if ($result1->num_rows > 0){
                                                             $count = 0;
@@ -503,7 +505,7 @@ include "include/Connect.php";
 					<div class="col-lg-6 show-up wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s">
 						<div class="blog-post">
 							<div class="thumb">
-								<a href="game post.php<?php echo'?id='.$row['GameID'] ?>"><img src="<?php echo $row['Picture'] ?>" alt="" onclick="gamePage(this.src , 'Fortnite')"></a>
+								<a href="game post.php<?php echo'?id='.$row['GameID'] ?>"><img src="<?php echo $row['Picture'] ?>" alt="" ></a>
 							</div>
 							<div class="down-content">
 								<span class="category"><?php echo $row['Type'] ?></span>
@@ -649,12 +651,6 @@ include "include/Connect.php";
 		<script src="assets2/js/animation.js"></script>
 		<script src="assets2/js/imagesloaded.js"></script>
 		<script src="assets2/js/custom.js"></script>
-		<script>
-			function gamePage(src , h4){
-				localStorage.setItem("src", src);
-				localStorage.setItem("h4", h4);
-			}
-		</script>
 		
 	</body>
 </html>																																																																																																																																																																																																	

@@ -2,14 +2,11 @@
 
 include "include/Connect.php";
 
-$SQL="SELECT Name , Description , Picture FROM game ;";
+$SQL="SELECT GameID, Name, Picture FROM game ;";
 $Result= mysqli_query( $Connect, $SQL);
 
 ?>                       
-                                    
-                                        
-
-
+    
 
 <!DOCTYPE html>
 <html lang="en">
@@ -75,10 +72,10 @@ $Result= mysqli_query( $Connect, $SQL);
 							
 							<!-- ***** Menu Start ***** -->
 							<ul class="nav">
-								<li class="scroll-to-section"><a href="index.html" class="active">Home</a></li>
-								<li class="scroll-to-section"><a href="index.html">About</a></li>
+								<li class="scroll-to-section"><a href="index.html#top" class="active">Home</a></li>
+								<li class="scroll-to-section"><a href="index.html#about">About</a></li>
 								<li class="scroll-to-section"><a href="Games list.html">Games</a></li>
-								<li class="scroll-to-section"><a href="index.html">Contact</a></li> 
+								<li class="scroll-to-section"><a href="index.html#contact">Contact</a></li> 
 								<li class="scroll-to-section"><div class="border-first-button"></div></li> 
 							</ul>
 							
@@ -107,38 +104,20 @@ $Result= mysqli_query( $Connect, $SQL);
 		<div class="demos" id="demos">
 			<div class="container">
 				<div class="row">
+                                    <?php
+                                    if ($Result->num_rows > 0){
+                                        while($row=mysqli_fetch_assoc($Result)){
+                                    ?>
 					<div class="col-lg-4">
 						<div class="demo-item" style="margin-bottom: 30px;">
-							<a href="game post.html"><img src="assets2/images/forza horizon.jpg" alt="DigiMedia - variation 1" style="width: 295.984px; height: 295.984px;"></a>
-							<h4 style="margin-top: 15px;width: 295.984px; color: #ac6fe1;">forza horizon</h4>
+							<a href="game post.php<?php echo'?id='.$row['GameID'] ?>"><img src="<?php echo $row['Picture'] ?>" alt="" style="width: 295.984px; height: 295.984px;"></a>
+							<h4 style="margin-top: 15px;width: 295.984px; color: #ac6fe1;"><?php echo $row['Name'] ?></h4>
 						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="demo-item" style="margin-bottom: 30px;">
-							<a href="game post.html"><img src="assets/images/FullGuys.jpg" alt="DigiMedia - variation 1" style="width: 295.984px; height: 295.984px;"></a>
-							<h4 style="margin-top: 15px;width: 295.984px; color: #ac6fe1;">Full Guys</h4>
-						</div>
-					</div>
-                                    
-					
-                                                    <?php 
-                                                      while($row = mysqli_fetch_assoc($Result) ){
-                                                   echo "<div class=\"col-lg-4\">";
-                                                   echo "<div class=\"demo-item\" style=\"margin-bottom: 30px;\">";
-                                                    echo "<a href='game post.html'><img src='".$row['Picture'] ."' alt='DigiMedia - variation' style='width: 295.984px; height: 295.984px;' ></a>";
-                                                    echo "<h4 style=\"margin-top: 15px;width: 295.984px; color: #ac6fe1;\">".$row["Name"]."</h4>";
-                                                      
-                                                      echo "</div>";
-                                                      echo "</div>";
-                                                      }
-                                                    ?>
-							
-						
-									
-					
-					
-				
-					
+                                        </div>
+                                    <?php
+                                        }
+                                    }
+                                    ?>
 					
 				</div>
 			</div>
