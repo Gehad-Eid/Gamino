@@ -2,7 +2,7 @@
 
 Group w4 
 
-Gehad
-Faten
-Hajar
-Renad
+Gehad, 
+Faten, 
+Hajar, 
+Renad 
