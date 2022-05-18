@@ -1,10 +1,15 @@
-<?php
+<?php  
+
+include "include/Connect.php";
+
+$SQL="SELECT * FROM game ;";
+$Result= mysqli_query( $Connect, $SQL);
+
 session_start();
 if(isset($_SESSION["isAdmin"])){
    header('Location:Admin.php?'.$_SESSION["nameo"]);
 }
-?>
-
+?> 
 <!DOCTYPE html>
 <html lang="en">
 	
@@ -29,7 +34,11 @@ if(isset($_SESSION["isAdmin"])){
 		<link rel="stylesheet" href="assets2/css/animated.css">
 		<link rel="stylesheet" href="assets2/css/owl.css">
                 
-		<style>
+                <style>
+			.formTxt1{
+			position:relative;
+			right:350px;
+			}
 			.formTxt3{
 			/*position:relative;*/
 			right:210px;
@@ -37,7 +46,18 @@ if(isset($_SESSION["isAdmin"])){
 			font-size:100%;
 			font-weight: bold;
 			}
+			.formTxt4{
+			position:relative;
+			right:330px;
 			
+			}
+			.formTxt2{
+			position:relative;
+			top:70%;
+			left:35%;
+			right:65%;
+			bottom:30%;
+			}
 			input{
 			background-color:white;
 			}
@@ -46,23 +66,25 @@ if(isset($_SESSION["isAdmin"])){
 			right: 40px;
 			color: #fa65b1;
 			font-size: 30px;
+			}
+			#S1 {
+			position: relative;
+			right: 600px;
+			top: 20px;
+			font-size: 15px;
 			
-                        #Success{
-                           text-align: center;
-                           color: #3c763d;
-                           background-color: #dff0d8;
-                           display: none;
-                           border-color: #d6e9c6;
-                           padding: 15px;
-                           margin-bottom: 20px;
-                           border: 1px solid transparent;
-                           border-radius: 4px; 
-                           position: relative;
-                           left: 15%;
-                           width: 70%;
+			}
+			#labelsign{
+			
+			display: none;
+			}
+			#sign{
+			position: relative;
+			top:30px;
+			right: 400px;
+			
 			}
 		</style>
-		
 	</head>
 	
 	<body>
@@ -79,8 +101,6 @@ if(isset($_SESSION["isAdmin"])){
 			</div>
 		</div>
 		<!-- ***** Preloader End ***** -->
-		
-		
 		
 		<!-- ***** Header Area Start ***** -->
 		<header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
@@ -110,7 +130,7 @@ if(isset($_SESSION["isAdmin"])){
 								<li class="scroll-to-section"><a href="index.php#blog">Recent Games</a></li>
 								<li class="scroll-to-section"><a href="Games list.php">Games</a></li>
 								<li class="scroll-to-section"><a href="index.php#contact">Contact</a></li> 
-								<li class="scroll-to-section"></li> 
+								<li class="scroll-to-section"><div class="border-first-button"><a href="log in.php">log in</a></div></li> 
 							</ul>
 							
 							<a class='menu-trigger'>
@@ -133,41 +153,43 @@ if(isset($_SESSION["isAdmin"])){
 					<div class="row">
 						<div class="col-lg-6 offset-lg-3">
 							<div class="section-heading wow fadeIn" data-wow-duration="1s" data-wow-delay="0.5s">
-								<h6>Manager Log in</h6>
+								<h6>Sign up</h6>
 								<h4>Welcame to <em>Gamino</em></h4>
 								<div class="line-dec"></div>
 							</div>
 						</div>
 						
 						<div class="col-lg-12 wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.25s">
-                                                    <form id="contact" style=" width: 50%; margin: auto;" onsubmit='return false;'> 
+                                                    <form id="contact" style=" width: 50%; margin: auto;" onsubmit='return false;' > <!-- onsubmit="moveToUserPage();return false;" -->
 								<div id="box" class="row">
 									<div class="fill-form">
 										<div class="col-lg-12" style="margin: auto;">
-                                                                                     
 											<fieldset>
-												<div class="formTxt3"><label id="Form1" for="name" style="background-color: white; left: 1vw;">Admin log in</label></div>
+												<div class="formTxt3"><label id="Form1" for="name" style="background-color: white; left: 1vw;">Please fill in the information</label></div>
 												<br>
-                                                                                                <p id='Success' style="text-align: center; color: #3c763d;  background-color: #dff0d8; display: none; border-color: #d6e9c6; padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px; position: relative; left: 15%; width: 70%;"></p>
+                                                                                                <p id='Success'></p>
                                                                                                 <br>
+                                                                                                <div class="formTxt1"></div>
+												<input id="uname" type="nameu" name="nameu"  placeholder="Your first name" autocomplete="on" pattern="[A-Za-z]{3,}$" title="At least 3 letters only" required>
+											<br>
 												<div class="formTxt1"></div>
-												<input style="background-color: white;" id="name" type="name" name="name" id="name" placeholder="Enter your username" autocomplete="on" pattern="[A-Za-z]{3,}$" title="Only letters, At least 3" required>
-											<br><br>
+												<input id="name" type="name" name="name"  placeholder="Username" autocomplete="on" pattern="[A-Za-z]{3,}$" title="At least 3 letters only" required>
+											<br>
+												<div class="formTxt1"></div>
+												<input id="email" type="email" name="email"  placeholder="Email" autocomplete="on" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>  
+											<br>
 												<div class="formTxt4"></div>
-												<input style="background-color: white;" id="password" type="password" name="password" id="password" placeholder="Enter your password" autocomplete="on" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-												title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters" required>  
-											
+												<input id="password" type="password"  id="password" placeholder="Password" autocomplete="on"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+												title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters" required> 
                                                                                         </fieldset>
 										</div>
-										
 										<div class="col-lg-12">
 											<fieldset>
-												<button type="submit"  id="formt-submit" class="main-button">LogIn</button>
-                                                                                                <h6 style="margin-top: 20px; margin-bottom: 20px;">Don't have an account? <a id="sign" href="sign up.php">sign up</a> now!</h6>
+												<button type="submit"  id="form-submit" class="main-button ">SignUp</button>
 											</fieldset>
+											
 										</div>
-                                                                            </div>
-									
+									</div>
 								</div>
                                                         </form>
                                                 </div>
@@ -184,38 +206,52 @@ if(isset($_SESSION["isAdmin"])){
 			
 			<p style="padding-right: 50px;">©2022 Gamino | Some Rights Reserved</p>
                     </footer>
-		
-		
-		<!-- Scripts -->
-		<script src="vendor/jquery/jquery.min.js"></script>
-		<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-		<script src="assets/js/owl-carousel.js"></script>
-		<script src="assets/js/animation.js"></script>
-		<script src="assets/js/imagesloaded.js"></script>
-		<script src="assets/js/custom.js"></script>
-                <script>
-                    $('#formt-submit').on("click", function () {
+			
+			
+			<!-- Scripts -->
+			<script src="vendor/jquery/jquery.min.js"></script>
+			<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+			<script src="assets/js/owl-carousel.js"></script>
+			<script src="assets/js/animation.js"></script>
+			<script src="assets/js/imagesloaded.js"></script>
+			<script src="assets/js/custom.js"></script>
+                        <script>
+                    $('#form-submit').on("click", function () {
                         LOGname = $('#name').val();
+                        LOGuname = $('#uname').val();
                         LOGpass = $('#password').val();
+                        signEmail = $('#email').val();
                         $('#Success').html("");
-                        if(LOGname !== '' && LOGpass !== ''){
-                            $.post("contact.php", {Lname: LOGname, pass: LOGpass}, 
+                        
+                        if(LOGname !== '' && LOGuname !== '' && LOGpass!== '' && signEmail !== '' && check(LOGname,/[A-Za-z]{3,}$/) && check(LOGuname,/[A-Za-z]{3,}$/) && check(LOGpass,/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/) && check(signEmail,/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/)){
+                            $.post("contact.php", {Sname: LOGname, SnameU: LOGuname, Spass: LOGpass, Semail: signEmail}, 
                             function(data){
-                                if(data.indexOf("done ") > -1){
-                                    Dat = data.replace('done ','');
-                                    location.href="Admin.php?n="+Dat;  
-                                }
-                                else{
-                                    LOGname = $('#name').val('');
-                                    LOGpass = $('#password').val('');
+                                LOGname = $('#name').val('');
+                                LOGpass = $('#password').val('');
+                                signEmail = $('#email').val('');
+                                if(data === 'Something went wrong'){
                                     $("#Success").show();
                                     $('#Success').append(data);
+                                }
+                                else{
+                                    $("#Success").show();
+                                    $('#Success').append(data);
+                                    location.href="Admin.php?n="+LOGuname;  
                                 }
                             });
                         }
                     });
+                    
+                    function check(txt,ptrn){
+                        let text = txt;
+                        let pattern = ptrn;
+                        let res = pattern.test(text);
+                        return res;
+                    }
                 </script>
-                </body>
-	</html>												
+
+        </body>
+</html>												
+
 	
-	
+		

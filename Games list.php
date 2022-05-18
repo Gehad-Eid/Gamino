@@ -6,6 +6,7 @@ $SQL="SELECT GameID, Name, Picture FROM game ;";
 $Result= mysqli_query( $Connect, $SQL);
 
 session_start();
+$n='';
  if(isset($_SESSION["nameo"])){
     $n=$_SESSION["nameo"];
   }
@@ -25,7 +26,7 @@ session_start();
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 		
-		<title>game list</title>
+                <title><?php if(isset($_GET['update'])){echo 'Update';}else{echo 'Game';} ?> list</title>
 		
 		<!-- Bootstrap core CSS -->
 		<link href="vendor2/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -61,7 +62,7 @@ session_start();
 					<div class="col-12">
 						<nav class="main-nav">
 							<!-- ***** Logo Start ***** -->
-							<a href="index.php" class="logo" id="OB">
+							<a href="Admin.php?n=<?php echo $n ;?>" class="logo" id="OB">
 								<img src="assets/images/logo-v1.png" alt="">
 							</a>
 							<style>
@@ -83,7 +84,6 @@ session_start();
 								<li class="scroll-to-section"><a href="Admin.php?in=y&n=<?php echo $n ;?>#free-quote">Tools</a></li>
 								<li class="scroll-to-section"><a href="Admin.php?in=y&n=<?php echo $n ;?>#portfolio">You Games</a></li>
 								<li class="scroll-to-section"><a href="Games list.php?in=y&n=<?php echo $n ;?>">Games</a></li>
-								<li class="scroll-to-section"><a href="Admin.php?in=y&n=<?php echo $n ;?>#Search">Search</a></li>
 								<li class="scroll-to-section"><a href="Admin.php?in=y&n=<?php echo $n ;?>#contact">Contact</a></li>
 								<li class="scroll-to-section"><div class="border-first-button"><a href="LogOut.php">Log out</a></div></li> 
 							</ul>

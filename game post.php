@@ -16,11 +16,11 @@ else{
 $sql2="SELECT * FROM review where GameID = $id;";
 $result2=$Connect->query($sql2); 
 $result3=$Connect->query($sql2);
-  if ($result2->num_rows > 0){
-   $row2=mysqli_fetch_assoc($result2);
-} 
+$row2=mysqli_fetch_assoc($result2);
+ 
 
 session_start();
+$n='';
  if(isset($_SESSION["nameo"])){
     $n=$_SESSION["nameo"];
   }
@@ -76,7 +76,7 @@ session_start();
 					<div class="col-12">
 						<nav class="main-nav">
 							<!-- ***** Logo Start ***** -->
-							<a href="index.php" class="logo" id="OB">
+							<a href="Admin.php?n=<?php echo $n ;?>" class="logo" id="OB">
 								<img src="assets/images/logo-v1.png" alt="">
 							</a>
 							<style>
@@ -99,7 +99,6 @@ session_start();
 								<li class="scroll-to-section"><a href="Admin.php?in=y&n=<?php echo $n ;?>#free-quote">Tools</a></li>
 								<li class="scroll-to-section"><a href="Admin.php?in=y&n=<?php echo $n ;?>#portfolio">You Games</a></li>
 								<li class="scroll-to-section"><a href="Games list.php?in=y&n=<?php echo $n ;?>">Games</a></li>
-								<li class="scroll-to-section"><a href="Admin.php?in=y&n=<?php echo $n ;?>#Search">Search</a></li>
 								<li class="scroll-to-section"><a href="Admin.php?in=y&n=<?php echo $n ;?>#contact">Contact</a></li>
 								<li class="scroll-to-section"><div class="border-first-button"><a href="LogOut.php">Log out</a></div></li> 
 							</ul>
@@ -206,9 +205,18 @@ session_start();
 											<div class="col-lg-7">
 												<div class="col-12 pb-4" style="margin-top: 75px;">
 													<!-- <h4 style="font-style: normal; color: #726ae3;margin: 30px auto;">Comments</h4> -->
-                                                                                                        <?php if($row2['revNum'] == 0){ ?>
-                                                                                                             <h4 style="padding-top: 25%;"> There is no reviews yet!</h4>  <br>
-														<p style="text-align: center;"> Be the first one and post your review.. </p>   
+                                                                                                        <?php
+                                                                                                         if(!isset($row2['revNum'])){?>
+                                                                                                               <h4 style="padding-top: 25%;"> There is no reviews yet!</h4>  
+                                                                                                            <br>
+                                                                                                            <p style="text-align: center;"> Be the first one and post your review.. </p>  
+                                                                                                            
+                                                                                                        <?php }
+                                                                                                       if(isset($row2['revNum'])){
+                                                                                                            if($row2['revNum'] == 0){ ?>
+                                                                                                            <h4 style="padding-top: 25%;"> There is no reviews yet!</h4>  
+                                                                                                            <br>
+                                                                                                            <p style="text-align: center;"> Be the first one and post your review.. </p>   
                                                                                                             <?php
                                                                                                             }else{
                                                                                                                 if ($result3->num_rows > 0){
@@ -221,7 +229,8 @@ session_start();
                                                                                                         <?php
                                                                                                                     }
                                                                                                                 }
-                                                                                                            }?>
+                                                                                                            }
+                                                                                                       }?>
 													
 												</div>
 											</div>

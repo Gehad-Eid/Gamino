@@ -5,6 +5,11 @@ include "include/Connect.php";
  
  $sql4="SELECT * FROM game;";
  $result4=$Connect->query($sql4);
+ 
+ session_start();
+ if(isset($_SESSION["isAdmin"])){
+   header('Location:Admin.php?'.$_SESSION["nameo"]);
+}
 ?>
 
 <!DOCTYPE html>
@@ -116,16 +121,11 @@ include "include/Connect.php";
 							<div class="col-lg-6 align-self-center">
 								<div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
 									<div class="row">
-										<div class="col-lg-12">
-											<h6>Gamnio</h6>
-											<h2>We Bring You The Truth</h2>
-											<p>In Gamnio we work very hard to ease the reviews searching process for our users. Here you can find all different kind of games and thier reviews , you can see reviews or write yours ,and know the latest news about games.</p>
-										</div>
-										<!-- <div class="col-lg-12">
-											<div class="border-first-button scroll-to-section">
-												<a href="sign up.php">sign up</a>
-											</div>
-										</div> -->
+                                                                                <div class="col-lg-12">
+                                                                                        <h6>Gamnio</h6>
+                                                                                        <h2>We Bring You The Truth</h2>
+                                                                                        <p>In Gamnio we work very hard to ease the reviews searching process for our users. Here you can find all different kind of games and thier reviews , you can see reviews or write yours ,and know the latest news about games.</p>
+                                                                                </div>
 									</div>
 								</div>
 							</div>
@@ -421,7 +421,7 @@ include "include/Connect.php";
 								
 								<div class="col-lg-4 col-sm-4">
 									<fieldset>
-										<button type="submit" id='search-btn' class="main-button">Search! </button>
+										<button type="submit" id='search-btn' class="main-button">Search!🔍</button>
 									</fieldset>
 								</div>
 							</div>
@@ -526,7 +526,7 @@ include "include/Connect.php";
 								<span class="date"><?php echo $row['AddTime'] ?></span>
 								<a ><h4><?php echo $row['Name'] ?></h4></a>
 								<p style="max-height: 120px;text-overflow: ellipsis; word-wrap: break-word; overflow: hidden;"><?php echo $row['Description']?></p>
-								<span class="author"><img src="assets2/images/author-post.jpg" alt="">By: Andrea Mentuzi</span>
+								<span class="author"><img src="" alt=""></span>
 								<div class="border-first-button"><a href="game post.php<?php echo'?id='.$row['GameID'];  if(isset($_GET['n'])){ echo '&n='.$_GET['n'];} ?>">See Post</a></div>
 							</div>
 						</div>

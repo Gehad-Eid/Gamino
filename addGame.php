@@ -1,6 +1,6 @@
 <?php
 include "include/Connect.php";
-include './upload.php'; //vid icon 
+include './upload.php';
 $btn=false;
 $UPname= '';  
 $Desc='';
@@ -25,6 +25,10 @@ if(isset($_GET['update'])){
 }
 
 session_start();
+ if(!isset($_SESSION["isAdmin"])){
+    header('Location:index.php');
+  }
+$n='';
  if(isset($_SESSION["nameo"])){
     $n=$_SESSION["nameo"];
   }
@@ -84,7 +88,7 @@ session_start();
 					<div class="col-12">
 						<nav class="main-nav">
 							<!-- ***** Logo Start ***** -->
-							<a href="Admin.php" class="logo" id="OB">
+							<a href="Admin.php?n=<?php echo $n ;?>" class="logo" id="OB">
 								<img src="assets/images/logo-v1.png" alt="">
 							</a>
 							<style>
@@ -103,7 +107,6 @@ session_start();
 								<li class="scroll-to-section"><a href="Admin.php?in=y&n=<?php echo $n ;?>#free-quote">Tools</a></li>
 								<li class="scroll-to-section"><a href="Admin.php?in=y&n=<?php echo $n ;?>#portfolio">You Games</a></li>
 								<li class="scroll-to-section"><a href="Games list.php?in=y&n=<?php echo $n ;?>">Games</a></li>
-								<li class="scroll-to-section"><a href="Admin.php?in=y&n=<?php echo $n ;?>#Search">Search</a></li>
 								<li class="scroll-to-section"><a href="Admin.php?in=y&n=<?php echo $n ;?>#contact">Contact</a></li>
 								<li class="scroll-to-section"><div class="border-first-button"><a href="LogOut.php">Log out</a></div></li> 
 							</ul>
@@ -133,7 +136,7 @@ session_start();
 					</div>
 					<div class="col-lg-12 wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.25s">
                                             
-						<form enctype="multipart/form-data" id="contact" action="" method="POST">
+						<form enctype="multipart/form-data" id="contact" method="POST">
 							<div id="box" class="row">
 								<div class="fill-form">
 									<div id="row" class="row">
@@ -157,7 +160,8 @@ session_start();
                                                                                     <div id="photo" class="info-post">
                                                                                         <div class="icon">
                                                                                             <img src="assets/images/upload pic.png" alt="">
-                                                                                            <input class="file" id="pic" type="file" value="<?php echo $Pic ?>" name="photo" >
+                                                                                            <input class="file" id="pic" type="file"  name="photo" >
+                                                                                            <input style="display: none" type="text" name='pic' value="<?php echo $Pic; ?>">
                                                                                             <a >Picture</a>
                                                                                         </div>
                                                                                     </div>
@@ -167,8 +171,9 @@ session_start();
                                                                                     <div class="info-post">
                                                                                         <div class="icon">
                                                                                             <img src="assets/images/video.png" alt="">
-                                                                                            <input class="file" id="video" type="file" value="<?php echo $Video; ?>" name="video"  >
-                                                                                            <a >Game Trailer</a>
+                                                                                            <input class="file" id="video" type="file"  name="video"  >
+                                                                                            <input style="display: none" type="text" name='vid' value="<?php echo $Video; ?>">
+                                                                                            <a >Video Story</a>
                                                                                         </div>
                                                                                     </div>
                                                                                 </label>
@@ -177,11 +182,11 @@ session_start();
 									<div class="col-lg-6">
                                                                             <fieldset>
                                                                                 <p style="position: relative; right: 100%; font-size: 10.9px;">If there's not video file then please put the URL</p>
-                                                                                <input  style="background-color: white; margin-top: 0px;" type="text" name="GameStory" placeholder="The game story URL" value="<?php echo $vURL ?>" autocomplete="on">
+                                                                                <input  style="background-color: white; margin-top: 0px;" type="url" name="GameStory" placeholder="The game story URL" value="<?php echo $vURL ?>" autocomplete="on">
                                                                             </fieldset>
 										
                                                                             <fieldset>
-                                                                                <input  style="background-color: white;" id="name" type="text" name="GName" placeholder="Name" value="<?php echo $UPname ?>" autocomplete="on" required>
+                                                                                <input  style="background-color: white;" id="name" type="text" name="GName" placeholder="Name" value="<?php echo $UPname ?>" required>
                                                                             </fieldset>
 										
                                                                             <fieldset>
