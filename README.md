@@ -1,8 +1,3 @@
-# Gamino-SWE
+# Gamino
 
-Group w4 
-
-Gehad, 
-Faten, 
-Hajar, 
-Renad 
+A games reviews website 
